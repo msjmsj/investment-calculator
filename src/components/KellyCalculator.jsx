@@ -207,7 +207,7 @@ function KellyCalculator() {
                 <div>
                   <div className="font-bold text-red-800">交易策略警告</div>
                   <div className="text-sm text-red-700 mt-1">
-                    期望收益为负 ({(results.expectedReturn * 100).toFixed(2)}%)，长期必亏。
+                    期望收益为负 ({results.expectedReturn.toFixed(2)}%)，长期必亏。
                     烧饼教心法：无利可图之事，智者不为。
                   </div>
                 </div>

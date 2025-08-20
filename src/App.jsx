@@ -5,6 +5,7 @@ import KellyCalculator from './components/KellyCalculator'
 
 function App() {
   const [activeTab, setActiveTab] = useState('calculator')
+  const [logoError, setLogoError] = useState(false)
 
   const tabs = [
     { id: 'calculator', label: '烤饼计算器', icon: Calculator, desc: '先涨后跌模型 · 火候掌控' },
@@ -17,7 +18,18 @@ function App() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center space-x-3">
-              <img src="/logo.png" alt="烧饼教" className="h-10 w-10 rounded-lg" />
+              {!logoError ? (
+                <img 
+                  src={`${import.meta.env.BASE_URL}logo.png`} 
+                  alt="烧饼教" 
+                  className="h-10 w-10 rounded-lg"
+                  onError={() => setLogoError(true)}
+                />
+              ) : (
+                <div className="h-10 w-10 bg-gradient-to-br from-orange-500 to-red-500 rounded-lg flex items-center justify-center text-white font-bold text-sm">
+                  🥞
+                </div>
+              )}
               <div>
                 <h1 className="text-xl font-bold text-gray-900">烧饼教</h1>
                 <p className="text-xs text-orange-600 font-medium">技以载道 · 试错为王</p>

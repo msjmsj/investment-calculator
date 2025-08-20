@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { Calculator, DollarSign, Percent, TrendingUp, TrendingDown } from 'lucide-react'
-import KellyCalculator from './KellyCalculator'
 
 function InvestmentCalculator() {
   const [inputs, setInputs] = useState({
@@ -237,9 +236,6 @@ function InvestmentCalculator() {
           </div>
         </div>
       </div>
-
-      {/* 凯利公式仓位管理 */}
-      <KellyCalculator />
     </div>
   )
 }

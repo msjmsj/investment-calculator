@@ -1,8 +1,8 @@
 {
-  "name": "investment-calculator",
+  "name": "shaobing-dao",
   "version": "1.0.0",
   "type": "module",
-  "description": "投资收益计算器 - 基于先涨后跌模型",
+  "description": "烧饼教 - 技以载道，试错为王的投资哲学工具",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

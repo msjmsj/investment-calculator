@@ -94,19 +94,27 @@ function KellyCalculator() {
   return (
     <div className="bg-white rounded-lg shadow-md p-6">
       <div className="flex items-center space-x-2 mb-6">
-        <Target className="h-6 w-6 text-purple-600" />
-        <h2 className="text-xl font-semibold text-gray-900">凯利公式仓位管理</h2>
+        <Target className="h-6 w-6 text-orange-600" />
+        <h2 className="text-xl font-semibold text-gray-900">仓位烤炉管理</h2>
+        <div className="ml-auto text-xs text-orange-600 font-medium">
+          🔥 凯利公式 · 火力分配术
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* 输入参数 */}
         <div className="space-y-4">
-          <h3 className="text-lg font-medium text-gray-900 mb-4">交易统计数据</h3>
+          <h3 className="text-lg font-medium text-gray-900 mb-4">烤饼历史数据 📊</h3>
+          <div className="bg-orange-50 border border-orange-200 rounded-lg p-3 mb-4">
+            <p className="text-sm text-orange-700">
+              <strong>烧饼心法：</strong>试错为王，多去尝试。从历史烤饼数据中找到最佳火力分配。
+            </p>
+          </div>
           
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               <TrendingUp className="inline h-4 w-4 mr-1 text-green-600" />
-              胜率 (%)
+              成功烤饼率 🏆 (%)
             </label>
             <input
               type="number"
@@ -117,15 +125,15 @@ function KellyCalculator() {
               min="0"
               max="100"
               step="1"
-              placeholder="胜率百分比"
+              placeholder="香饼出炉成功率"
             />
-            <p className="text-xs text-gray-500 mt-1">历史交易中盈利次数占总交易次数的比例</p>
+            <p className="text-xs text-gray-500 mt-1">历史烤饼中成功出炉香饼的比例</p>
           </div>
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               <TrendingUp className="inline h-4 w-4 mr-1 text-green-600" />
-              平均盈利 (%)
+              香饼平均利润 💰 (%)
             </label>
             <input
               type="number"
@@ -135,15 +143,15 @@ function KellyCalculator() {
               className="input-field"
               min="0"
               step="0.1"
-              placeholder="平均盈利百分比"
+              placeholder="成功烤饼平均收益"
             />
-            <p className="text-xs text-gray-500 mt-1">盈利交易的平均收益率</p>
+            <p className="text-xs text-gray-500 mt-1">成功出炉香饼的平均利润率</p>
           </div>
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               <TrendingDown className="inline h-4 w-4 mr-1 text-red-600" />
-              平均亏损 (%)
+              烧焦平均损失 💸 (%)
             </label>
             <input
               type="number"
@@ -153,15 +161,15 @@ function KellyCalculator() {
               className="input-field"
               min="0"
               step="0.1"
-              placeholder="平均亏损百分比"
+              placeholder="烤焦饼的平均损失"
             />
-            <p className="text-xs text-gray-500 mt-1">亏损交易的平均损失率（输入正数）</p>
+            <p className="text-xs text-gray-500 mt-1">火候不当烤焦饼的平均损失率（输入正数）</p>
           </div>
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               <Target className="inline h-4 w-4 mr-1 text-blue-600" />
-              总资金
+              总面粉资金 🏦
             </label>
             <input
               type="number"
@@ -171,8 +179,9 @@ function KellyCalculator() {
               className="input-field"
               min="0"
               step="10000"
-              placeholder="总投资资金"
+              placeholder="烤炉总投资资金"
             />
+            <p className="text-xs text-gray-500 mt-1">用于分配火力的总资金量</p>
           </div>
         </div>
 

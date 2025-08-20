@@ -26,19 +26,29 @@ function KellyCalculator() {
     // 凯利公式: f* = (bp - q) / b = p - q/b
     const kellyPercentage = (b * p - q) / b * 100
 
-    // 限制最大仓位不超过25%（风险控制）
-    const safeKellyPercentage = Math.max(0, Math.min(kellyPercentage, 25))
-    
-    // 建议仓位（通常使用1/4凯利或1/2凯利以降低风险）
-    const recommendedPosition = safeKellyPercentage * 0.5
-
     // 期望收益率
     const expectedReturn = p * avgWin - q * avgLoss
 
-    // 风险评级
-    let riskLevel = 'low'
-    if (kellyPercentage > 15) riskLevel = 'high'
-    else if (kellyPercentage > 8) riskLevel = 'medium'
+    // 处理负期望收益的情况
+    let safeKellyPercentage, recommendedPosition, riskLevel
+    
+    if (expectedReturn <= 0 || kellyPercentage <= 0) {
+      // 期望收益为负或凯利公式为负，不建议投资
+      safeKellyPercentage = kellyPercentage // 保持原值显示
+      recommendedPosition = 0 // 建议仓位为0
+      riskLevel = 'high' // 高风险警告
+    } else {
+      // 正常情况：限制最大仓位不超过25%
+      safeKellyPercentage = Math.min(kellyPercentage, 25)
+      
+      // 建议仓位（使用1/2凯利降低风险）
+      recommendedPosition = safeKellyPercentage * 0.5
+      
+      // 风险评级
+      if (kellyPercentage > 15) riskLevel = 'high'
+      else if (kellyPercentage > 8) riskLevel = 'medium'
+      else riskLevel = 'low'
+    }
 
     setResults({
       kellyPercentage: kellyPercentage,
@@ -189,14 +199,44 @@ function KellyCalculator() {
         <div className="space-y-4">
           <h3 className="text-lg font-medium text-gray-900 mb-4">最优仓位计算结果</h3>
           
+          {/* 负期望收益警告 */}
+          {results.expectedReturn <= 0 && (
+            <div className="bg-red-100 border-2 border-red-300 rounded-lg p-4">
+              <div className="flex items-center space-x-2">
+                <div className="text-red-600 text-xl">🚨</div>
+                <div>
+                  <div className="font-bold text-red-800">交易策略警告</div>
+                  <div className="text-sm text-red-700 mt-1">
+                    期望收益为负 ({(results.expectedReturn * 100).toFixed(2)}%)，长期必亏。
+                    烧饼教心法：无利可图之事，智者不为。
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+          
           {/* 理论最优仓位 */}
-          <div className="p-4 rounded-lg border-2 border-blue-200 bg-blue-50">
-            <div className="text-sm font-medium text-blue-800 mb-1">理论最优仓位</div>
-            <div className="text-2xl font-bold text-blue-900">
+          <div className={`p-4 rounded-lg border-2 ${
+            results.kellyPercentage <= 0 
+              ? 'border-red-200 bg-red-50' 
+              : 'border-blue-200 bg-blue-50'
+          }`}>
+            <div className={`text-sm font-medium mb-1 ${
+              results.kellyPercentage <= 0 ? 'text-red-800' : 'text-blue-800'
+            }`}>
+              理论最优仓位
+            </div>
+            <div className={`text-2xl font-bold ${
+              results.kellyPercentage <= 0 ? 'text-red-900' : 'text-blue-900'
+            }`}>
               {results.kellyPercentage.toFixed(2)}%
             </div>
-            <p className="text-xs text-blue-700 mt-1">
-              理论上能最大化长期收益的仓位比例
+            <p className={`text-xs mt-1 ${
+              results.kellyPercentage <= 0 ? 'text-red-700' : 'text-blue-700'
+            }`}>
+              {results.kellyPercentage <= 0 
+                ? '⚠️ 负值表示不应参与此类交易' 
+                : '理论上能最大化长期收益的仓位比例'}
             </p>
           </div>
 
@@ -209,6 +249,11 @@ function KellyCalculator() {
             <div className="text-sm mt-1">
               建议资金: {formatCurrency((inputs.totalCapital || 0) * results.recommendedPosition / 100)}
             </div>
+            {results.recommendedPosition === 0 && (
+              <div className="text-xs text-red-600 mt-2 font-medium">
+                ⚠️ 建议完全避免此类交易
+              </div>
+            )}
           </div>
 
           {/* 期望收益 */}

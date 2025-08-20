@@ -8,8 +8,8 @@ function App() {
   const [logoError, setLogoError] = useState(false)
 
   const tabs = [
-    { id: 'calculator', label: '烤饼计算器', icon: Calculator, desc: '先涨后跌模型 · 火候掌控' },
-    { id: 'kelly', label: '仓位烤炉', icon: Target, desc: '凯利公式 · 火力分配' }
+    { id: 'calculator', label: '保本策略', icon: Calculator, desc: '先涨后跌模型 · 保本止盈' },
+    { id: 'kelly', label: '最优仓位', icon: Target, desc: '仓位管理 · 赚多亏少' }
   ]
   return (
     <div className="min-h-screen bg-gray-50">

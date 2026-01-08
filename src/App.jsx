@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
-import { Calculator, Target, Flame } from 'lucide-react'
+import { Calculator, Target, Flame, TrendingDown } from 'lucide-react'
 import InvestmentCalculator from './components/InvestmentCalculator'
 import KellyCalculator from './components/KellyCalculator'
+import FibonacciCalculator from './components/FibonacciCalculator'
 
 function App() {
   const [activeTab, setActiveTab] = useState('calculator')
@@ -9,7 +10,8 @@ function App() {
 
   const tabs = [
     { id: 'calculator', label: '保本策略', icon: Calculator, desc: '先涨后跌模型 · 保本止盈' },
-    { id: 'kelly', label: '最优仓位', icon: Target, desc: '仓位管理 · 赚多亏少' }
+    { id: 'kelly', label: '最优仓位', icon: Target, desc: '仓位管理 · 赚多亏少' },
+    { id: 'fibonacci', label: '斐波那契', icon: TrendingDown, desc: '回撤分析 · 黄金分割' }
   ]
   return (
     <div className="min-h-screen bg-gray-50">
@@ -75,6 +77,7 @@ function App() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {activeTab === 'calculator' && <InvestmentCalculator />}
         {activeTab === 'kelly' && <KellyCalculator />}
+        {activeTab === 'fibonacci' && <FibonacciCalculator />}
       </main>
 
       {/* Footer */}

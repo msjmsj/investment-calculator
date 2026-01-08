@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>斐波那契回撤市值计算器</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .calculator {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            color: #1a1a2e;
+            margin-bottom: 30px;
+            font-size: 24px;
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 18px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #4a90d9;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #4a90d9 0%, #357abd 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(74, 144, 217, 0.4);
+        }
+
+        .results {
+            margin-top: 30px;
+        }
+
+        .results h2 {
+            color: #1a1a2e;
+            margin-bottom: 20px;
+            font-size: 18px;
+            border-bottom: 2px solid #4a90d9;
+            padding-bottom: 10px;
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            transition: transform 0.2s;
+        }
+
+        .result-item:hover {
+            transform: translateX(5px);
+        }
+
+        .level-236 { background: linear-gradient(90deg, #e8f5e9 0%, #c8e6c9 100%); }
+        .level-382 { background: linear-gradient(90deg, #e3f2fd 0%, #bbdefb 100%); }
+        .level-500 { background: linear-gradient(90deg, #fff3e0 0%, #ffe0b2 100%); }
+        .level-618 { background: linear-gradient(90deg, #fce4ec 0%, #f8bbd9 100%); }
+        .level-786 { background: linear-gradient(90deg, #f3e5f5 0%, #e1bee7 100%); }
+
+        .level-label {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .level-value {
+            font-weight: 700;
+            color: #1a1a2e;
+            font-size: 16px;
+        }
+
+        .note {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f5f5f5;
+            border-radius: 10px;
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <h1>斐波那契回撤市值计算器</h1>
+
+        <div class="input-group">
+            <label for="marketCap">输入当前市值 (K)</label>
+            <input type="number" id="marketCap" placeholder="例如: 128" step="1">
+        </div>
+
+        <div class="results" id="results" style="display: none;">
+            <h2>斐波那契回撤水平</h2>
+            <div class="result-item level-236">
+                <span class="level-label">23.6% 回撤</span>
+                <span class="level-value" id="level236">-</span>
+            </div>
+            <div class="result-item level-382">
+                <span class="level-label">38.2% 回撤</span>
+                <span class="level-value" id="level382">-</span>
+            </div>
+            <div class="result-item level-500">
+                <span class="level-label">50.0% 回撤</span>
+                <span class="level-value" id="level500">-</span>
+            </div>
+            <div class="result-item level-618">
+                <span class="level-label">61.8% 回撤 (黄金分割)</span>
+                <span class="level-value" id="level618">-</span>
+            </div>
+            <div class="result-item level-786">
+                <span class="level-label">78.6% 回撤</span>
+                <span class="level-value" id="level786">-</span>
+            </div>
+        </div>
+
+        <div class="note">
+            <strong>说明：</strong>斐波那契回撤是技术分析中常用的支撑/阻力位预测工具。
+            61.8% 被称为"黄金分割比例"，是最重要的回撤水平。
+        </div>
+    </div>
+
+    <script>
+        function formatNumber(num) {
+            return Math.round(num) + 'K';
+        }
+
+        function calculate() {
+            const marketCap = parseFloat(document.getElementById('marketCap').value);
+
+            if (isNaN(marketCap) || marketCap <= 0) {
+                document.getElementById('results').style.display = 'none';
+                return;
+            }
+
+            const levels = [
+                { id: 'level236', ratio: 0.236 },
+                { id: 'level382', ratio: 0.382 },
+                { id: 'level500', ratio: 0.500 },
+                { id: 'level618', ratio: 0.618 },
+                { id: 'level786', ratio: 0.786 }
+            ];
+
+            levels.forEach(level => {
+                const retracementValue = marketCap * (1 - level.ratio);
+                document.getElementById(level.id).textContent = formatNumber(retracementValue);
+            });
+
+            document.getElementById('results').style.display = 'block';
+        }
+
+        // 输入时实时计算
+        document.getElementById('marketCap').addEventListener('input', calculate);
+
+        // 点击输入框时清空输入
+        document.getElementById('marketCap').addEventListener('click', function(e) {
+            console.log('click 事件触发');
+            console.log('当前值:', this.value);
+            this.value = '';
+            console.log('清空后值:', this.value);
+            calculate();
+        });
+
+        // 额外测试 focus 事件
+        document.getElementById('marketCap').addEventListener('focus', function(e) {
+            console.log('focus 事件触发');
+        });
+    </script>
+</body>
+</html>

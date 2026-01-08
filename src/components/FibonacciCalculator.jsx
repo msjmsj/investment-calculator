@@ -77,7 +77,7 @@ function FibonacciCalculator() {
               type="number"
               value={marketCap}
               onChange={(e) => handleInputChange(e.target.value)}
-              onFocus={(e) => e.target.select()}
+              onClick={() => setMarketCap('')}
               className="input-field"
               min="0"
               step="1"
